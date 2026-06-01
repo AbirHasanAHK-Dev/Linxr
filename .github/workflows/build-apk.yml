@@ -118,12 +118,12 @@ jobs:
           is_kts = p.endswith(".kts")
 
           if "useLegacyPackaging" not in s:
-            m = re.search(r"android\\s*\\{", s)
+            m = re.search(r"\bandroid\s*\{", s)
             if not m:
               raise SystemExit("Could not find android { block in " + p)
             insert = (
               """
-                packagingOptions {
+                packaging {
                     jniLibs {
                         useLegacyPackaging = true
                     }
@@ -139,10 +139,10 @@ jobs:
                 }
               """
             )
-            s = s[: m.end()] + insert + s[m.end() :]
+            s = s[: m.end()] + "\n" + insert + "\n" + s[m.end() :]
 
           if "noCompress" not in s and "androidResources" not in s:
-            m = re.search(r"android\\s*\\{", s)
+            m = re.search(r"\bandroid\s*\{", s)
             if not m:
               raise SystemExit("Could not find android { block in " + p)
             insert = (
@@ -159,7 +159,7 @@ jobs:
                 }
               """
             )
-            s = s[: m.end()] + insert + s[m.end() :]
+            s = s[: m.end()] + "\n" + insert + "\n" + s[m.end() :]
 
           open(p, "w", encoding="utf-8").write(s)
           PY

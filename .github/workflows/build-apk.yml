@@ -109,14 +109,24 @@ jobs:
             m = re.search(r"android\\s*\\{", s)
             if not m:
               raise SystemExit("Could not find android { block in " + p)
-            insert = "\\n    packagingOptions {\\n        jniLibs {\\n            useLegacyPackaging = true\\n        }\\n    }\\n"
+            insert = """
+                packagingOptions {
+                    jniLibs {
+                        useLegacyPackaging true
+                    }
+                }
+            """
             s = s[: m.end()] + insert + s[m.end() :]
 
           if "noCompress" not in s and "androidResources" not in s:
             m = re.search(r"android\\s*\\{", s)
             if not m:
               raise SystemExit("Could not find android { block in " + p)
-            insert = "\\n    androidResources {\\n        noCompress += [\\"gz\\", \\"virt\\"]\\n    }\\n"
+            insert = """
+                androidResources {
+                    noCompress += ['gz', 'virt']
+                }
+            """
             s = s[: m.end()] + insert + s[m.end() :]
 
           open(p, "w", encoding="utf-8").write(s)

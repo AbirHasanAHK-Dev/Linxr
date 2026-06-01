@@ -12,6 +12,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Checkout QEMU jniLibs (arm64-v8a)
+        uses: actions/checkout@v4
+        with:
+          repository: ahksoft/Linxr-debian
+          ref: main
+          path: linxr-debian
+          fetch-depth: 1
+          sparse-checkout: |
+            android/app/src/main/jniLibs/arm64-v8a
+
       - name: Setup QEMU
         uses: docker/setup-qemu-action@v3
         with:
@@ -93,6 +103,10 @@ jobs:
 
           mkdir -p "$BUILD_DIR/android/app/src/main/assets"
           cp -r android/app/src/main/assets/. "$BUILD_DIR/android/app/src/main/assets/"
+
+          mkdir -p "$BUILD_DIR/android/app/src/main/jniLibs/arm64-v8a"
+          cp -r "$GITHUB_WORKSPACE/linxr-debian/android/app/src/main/jniLibs/arm64-v8a/." \
+            "$BUILD_DIR/android/app/src/main/jniLibs/arm64-v8a/"
 
           if [ -d android/app/src/androidTest ]; then
             mkdir -p "$BUILD_DIR/android/app/src"

@@ -65,7 +65,19 @@ jobs:
             --org com.ai2th \
             "$BUILD_DIR"
 
-          printf "sdk.dir=%s\nflutter.sdk=%s\n" "$ANDROID_SDK_ROOT" "$FLUTTER_HOME" > "$BUILD_DIR/android/local.properties"
+          ANDROID_SDK="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-}}"
+          if [ -z "$ANDROID_SDK" ]; then
+            echo "ERROR: ANDROID_SDK_ROOT/ANDROID_HOME is not set"
+            exit 1
+          fi
+
+          FLUTTER_SDK="$(dirname "$(dirname "$(command -v flutter)")")"
+          if [ ! -d "$FLUTTER_SDK" ]; then
+            echo "ERROR: Could not locate Flutter SDK dir"
+            exit 1
+          fi
+
+          printf "sdk.dir=%s\nflutter.sdk=%s\n" "$ANDROID_SDK" "$FLUTTER_SDK" > "$BUILD_DIR/android/local.properties"
 
           cp -r lib/. "$BUILD_DIR/lib/"
           cp pubspec.yaml "$BUILD_DIR/pubspec.yaml"

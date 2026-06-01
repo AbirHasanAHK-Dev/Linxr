@@ -9,7 +9,10 @@ import java.util.concurrent.Executors
 
 class MainActivity : FlutterActivity() {
     private val CHANNEL = "com.ai2th.linxr/vm"
-    private val vmManager get() = (applicationContext as AlpineApp).vmManager
+    private val vmManager: VmManager by lazy {
+        val app = applicationContext
+        if (app is AlpineApp) app.vmManager else VmManager(app)
+    }
     private val executor = Executors.newSingleThreadExecutor()
 
     override fun onCreate(savedInstanceState: Bundle?) {

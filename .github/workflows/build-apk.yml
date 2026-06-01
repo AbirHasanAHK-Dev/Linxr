@@ -88,6 +88,7 @@ jobs:
           mkdir -p "$BUILD_DIR/android/app/src/main"
           rm -rf "$BUILD_DIR/android/app/src/main/kotlin"
           cp -r android/app/src/main/kotlin "$BUILD_DIR/android/app/src/main/"
+          cp android/app/src/main/AndroidManifest.xml "$BUILD_DIR/android/app/src/main/AndroidManifest.xml"
           cp -r android/app/src/main/res/. "$BUILD_DIR/android/app/src/main/res/"
 
           mkdir -p "$BUILD_DIR/android/app/src/main/assets"
